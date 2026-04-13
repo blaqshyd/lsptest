@@ -1,34 +1,8 @@
-// Assume the full original initializeResultJson is as follows:
-const initializeResultJson = {
-  capabilities: {
-    textDocumentSync: 1,
-    selectionRangeProvider: true,
-    hoverProvider: true,
-    completionProvider: {
-      triggerCharacters: [".", "@"]
-    },
-    signatureHelpProvider: true,
-    definitionProvider: true,
-    typeDefinitionProvider: true,
-    implementationProvider: true,
-    referencesProvider: true,
-    documentHighlightProvider: true,
-    documentSymbolProvider: true,
-    workspaceSymbolProvider: true,
-    codeActionProvider: true,
-    codeLensProvider: true,
-    documentFormattingProvider: true,
-    documentRangeFormattingProvider: true,
-    documentOnTypeFormattingProvider: true,
-    renameProvider: true,
-    documentLinkProvider: true,
-    colorProvider: true,
-    foldingRangeProvider: true,
-    executeCommandProvider: true,
-    workspace: true,
-    callHierarchyProvider: true,
-    semanticTokensProvider: true,
-    inlayHintProvider: true,
-    experimental: {}
-  }
-};
+// This file contains helper functions for LSP
+// Please ensure that you have the LSP server properly configured.
+
+void exampleFunction() {
+    // This function is just an example
+
+    // Don't forget to handle errors properly.
+}

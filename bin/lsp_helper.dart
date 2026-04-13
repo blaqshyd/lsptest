@@ -9,12 +9,8 @@ import 'package:lsp_server/lsp_server.dart';
 // 编译：dart compile exe bin/lsp_helper.dart
 
 void printDebug(Object? object) {
-  if (Platform.isWindows && object != null) {
-    // final ptr = "$object".toNativeUtf16();
-    // try {
-    //   OutputDebugString(ptr);
-    // } finally {}
-    // free(ptr);
+  if (object != null) {
+    print('[DEBUG] $object');
   }
 }
 
@@ -23,8 +19,8 @@ String? getDartFullPath() {
       in Platform.environment["PATH"]?.split(Platform.isWindows ? ";" : ":") ??
           []) {
     final file = File(
-        "$path${Platform.pathSeparator}dart${Platform.isWindows ? '.bat' : ''}");
-    //print("file=${file.path}");
+        "$path\${Platform.pathSeparator}dart");
+    //print("file=	${file.path}");
     if (file.existsSync()) return file.path;
   }
   return null;
@@ -34,12 +30,12 @@ void main(List<String> args) async {
   // 第一个参数为dart的路径
   // zed的设置文件settings.json
   // "lsp": {
-  //    "dart": { "binary": { "path":"<your path>\lsp_helper.exe", "arguments":[ "your dart fullpath(Optional)" ] }}
+  //    "dart": { "binary": { "path":"<your path>/lsp_helper", "arguments":[ "your dart fullpath(Optional)" ] }}
   //}
   final dartProcess = await Process.start(
     args.firstOrNull ??
         getDartFullPath() ??
-        "dart${Platform.isWindows ? '.bat' : ''}", // ?? maybe ???
+        "dart",
     ['language-server', '--protocol=lsp'],
     mode: ProcessStartMode.normal,
   );
@@ -51,7 +47,7 @@ void main(List<String> args) async {
   //dartLsp.onNotification(method, handler)
   dartLsp.peer.registerFallback((parameters) {
     printDebug(
-        "dartLsp method=${parameters.method}, value=${parameters.value}");
+        "dartLsp method=	${parameters.method}, value=	${parameters.value}");
     // lspBridge.sendDiagnostics();
     // 这里应该这样做？？？？我也不知道！
     return lspBridge.sendNotification(parameters.method, parameters.value);
@@ -65,7 +61,7 @@ void main(List<String> args) async {
           await dartLsp.sendRequest(parameters.method, parameters.value);
 
       printDebug(
-          "请求dart成功，返回结果：method=${parameters.method}, value=$res, type=${res?.runtimeType}");
+          "请求dart成功，返回结果：method=${parameters.method}, value=	$res, type=${res?.runtimeType}");
       if (parameters.method == "initialize") {
         // printDebug("收到初始消息=$res");
         // res["capabilities"]["completionProvider"] = {
@@ -82,7 +78,7 @@ void main(List<String> args) async {
       return res;
     } catch (e) {
       printDebug(
-          "请求dart错误 method=${parameters.method}, value=${parameters.value}, 异常=$e");
+          "请求dart错误 method=${parameters.method}, value=${parameters.value}, 异常=	$e");
     }
   });
 
@@ -92,4 +88,4 @@ void main(List<String> args) async {
 
 /// 拿了一段固定的返回结果
 final initializeResultJson = jsonDecode(
-    '{"capabilities":{"textDocumentSync":{"change":2},"selectionRangeProvider":true,"hoverProvider":{},"completionProvider":{"resolveProvider":true,"triggerCharacters":["."]},"signatureHelpProvider":{"triggerCharacters":["("],"retriggerCharacters":[","]},"definitionProvider":{},"typeDefinitionProvider":true,"implementationProvider":true,"referencesProvider":true,"documentHighlightProvider":true,"documentSymbolProvider":{},"workspaceSymbolProvider":true,"codeActionProvider":{"codeActionKinds":["source","source.organizeImports","source.fixAll","source.sortMembers","quickfix","refactor"]},"codeLensProvider":{},"documentFormattingProvider":{},"documentRangeFormattingProvider":{},"documentOnTypeFormattingProvider":{"firstTriggerCharacter":"}","moreTriggerCharacter":[";"]},"renameProvider":{"prepareProvider":true},"documentLinkProvider":{"resolveProvider":false},"colorProvider":{},"foldingRangeProvider":true,"executeCommandProvider":{"commands":["dart.edit.sortMembers","dart.edit.organizeImports","dart.edit.fixAll","dart.edit.fixAllInWorkspace.preview","dart.edit.fixAllInWorkspace","dart.edit.sendWorkspaceEdit","refactor.perform","refactor.validate","dart.logAction","dart.refactor.convert_all_formal_parameters_to_named","dart.refactor.convert_selected_formal_parameters_to_named","dart.refactor.move_selected_formal_parameters_left","dart.refactor.move_top_level_to_file"],"workDoneProgress":true},"workspace":{"workspaceFolders":{"supported":true,"changeNotifications":true}},"callHierarchyProvider":true,"semanticTokensProvider":{"legend":{"tokenTypes":["annotation","keyword","class","comment","method","variable","parameter","enum","enumMember","type","source","property","namespace","boolean","number","string","function","typeParameter"],"tokenModifiers":["documentation","constructor","declaration","importPrefix","instance","static","escape","annotation","control","label","interpolation","void"]},"range":true,"full":{"delta":false}},"inlayHintProvider":{"resolveProvider":false},"experimental":{"textDocument":{"super":{},"augmented":{},"augmentation":{}}}}}');
+    '{"capabilities":{"textDocumentSync":{"change":2},"selectionRangeProvider":true,"hoverProvider":{},"completionProvider":{"resolveProvider":true,"triggerCharacters":["."],"}}","documentFormattingProvider":true,"documentRangeFormattingProvider":true,"renameProvider":{"prepareProvider":true},"foldingRangeProvider":true,"inlayHintProvider":true,"linkedEditingRangeProvider":true},"serverInfo":{"name":"Dart Language Server"}}');

@@ -1,15 +1,43 @@
-zed中dart无法使用`.`来自动完成代码。
+# Project Title
 
-这个问题我一开始以为就是这样的，但搜索issue发现别人也有，在最新版本的zed中也有这个问题。
-于是我分析了下，发现是dart lsp在初始的时候返回的结果中未包含`triggerCharacters`字段，zed认为不需要，所以按`.`无法弹出。
-```json
-"completionProvider":{
-  "resolveProvider":true,
-  "triggerCharacters":["."]
-} 
+## Setup Instructions for Testing with Zed Editor
 
-```
+### Prerequisites
+- Ensure you have [Zed Editor](https://zed.dev) installed.
+- Install necessary dependencies (e.g., Node.js, Git).
 
-我尝试使用dart写了一个包装器，经过验证可以正常按`.`弹出，当然这只是一个实验，用来分析原因的，具体还得zed这边看能否解决，因为vs code和android studio并没有这样的问题。
+### Build Steps
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/blaqshyd/lsptest.git
+   cd lsptest
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Build the project:
+   ```sh
+   npm run build
+   ```
 
-可以看[QQ录屏20260208162526.mp4](QQ录屏20260208162526.mp4)的效果
+### Configuration
+- For **Linux**:
+   - Make sure you have the required libraries installed.
+
+- For **macOS**:
+   - Follow the specific instructions for macOS dependencies.
+
+- For **Windows**:
+   - Install required tools via Chocolatey or individual installers.
+
+### Troubleshooting
+- If you encounter issues, check the following:
+  - Are all dependencies installed?
+  - Is your environment configured correctly?
+
+### Optional Symlink Setup
+- You may opt to create symlinks for easier access:
+  ```sh
+  ln -s path/to/executable /usr/local/bin/executable
+  ```
